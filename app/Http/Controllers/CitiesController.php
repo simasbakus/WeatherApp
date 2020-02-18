@@ -14,7 +14,7 @@ class CitiesController extends Controller
      */
     public function index()
     {
-        //
+        return view('/home');
     }
 
     /**
@@ -47,6 +47,8 @@ class CitiesController extends Controller
         $weather->windSpeed = $decoded->wind->speed;
         $weather->save();
 
+        return redirect("/weather/$weather->id");
+
     }
 
     /**
@@ -55,9 +57,10 @@ class CitiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($city)
     {
-        //
+        $city = City::findOrFail($city);
+        return view('currentWeather', compact('city'));
     }
 
     /**
