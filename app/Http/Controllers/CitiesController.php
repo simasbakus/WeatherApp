@@ -36,19 +36,25 @@ class CitiesController extends Controller
     public function store(Request $request)
     {
         $city = request()->city;
-        $url = "http://api.openweathermap.org/data/2.5/weather?q=$city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
-        $array = file_get_contents($url);
-        $decoded = json_decode($array);
-        $weather = new City();
-        $weather->city = $decoded->name;
-        $weather->description = $decoded->weather[0]->description;
-        $weather->temp = $decoded->main->temp;
-        $weather->tempFeels = $decoded->main->feels_like;
-        $weather->windSpeed = $decoded->wind->speed;
-        $weather->save();
+        $doesExist = City::where('city', $city)->first();
+        if ($doesExist) {
+            return redirect("/weather/$doesExist->id");
+        } else {
+            $url = "http://api.openweathermap.org/data/2.5/weather?q=$city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
+            $array = file_get_contents($url);
+            $decoded = json_decode($array);
+            $temp = $decoded->main->temp - 273.15;
+            $realFeel = $decoded->main->feels_like - 273.15;
+            $weather = new City();
+            $weather->city = $decoded->name;
+            $weather->description = $decoded->weather[0]->description;
+            $weather->temp = $temp;
+            $weather->tempFeels = $realFeel;
+            $weather->windSpeed = $decoded->wind->speed;
+            $weather->save();
 
-        return redirect("/weather/$weather->id");
-
+            return redirect("/weather/$weather->id");
+        };
     }
 
     /**
