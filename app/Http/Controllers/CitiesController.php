@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\City;
 
 class CitiesController extends Controller
 {
@@ -34,7 +35,18 @@ class CitiesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $city = request()->city;
+        $url = "http://api.openweathermap.org/data/2.5/weather?q=$city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
+        $array = file_get_contents($url);
+        $decoded = json_decode($array);
+        $weather = new City();
+        $weather->city = $decoded->name;
+        $weather->description = $decoded->weather[0]->description;
+        $weather->temp = $decoded->main->temp;
+        $weather->tempFeels = $decoded->main->feels_like;
+        $weather->windSpeed = $decoded->wind->speed;
+        $weather->save();
+
     }
 
     /**

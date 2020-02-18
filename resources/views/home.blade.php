@@ -4,19 +4,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div>
+            <form class="" action="/weather" method="post">
+              <label for="city">Find Your City</label>
+              <input type="text" name="city" value="">
+              <button type="submit" name="searchBtn" class="btn btn-primary">Search</button>
+              @csrf
+            </form>
         </div>
     </div>
 </div>
