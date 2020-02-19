@@ -22,3 +22,5 @@ Route::get('/home', 'CitiesController@index')->name('home');
 Route::post('/weather', 'CitiesController@store');
 
 Route::get('/weather/{city}', 'CitiesController@show');
+
+Route::patch('/weather/{id}', 'CitiesController@update');

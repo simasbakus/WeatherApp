@@ -87,9 +87,23 @@ class CitiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        $cities = City::get();
+        foreach ($cities as $city) {
+          $url = "http://api.openweathermap.org/data/2.5/weather?q=$city->city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
+          $array = file_get_contents($url);
+          $decoded = json_decode($array);
+          $temp = $decoded->main->temp - 273.15;
+          $realFeel = $decoded->main->feels_like - 273.15;
+
+          $city->description = $decoded->weather[0]->description;
+          $city->temp = $temp;
+          $city->tempFeels = $realFeel;
+          $city->windSpeed = $decoded->wind->speed;
+          $city->save();
+        };
+        return redirect("/weather/$id");
     }
 
     /**

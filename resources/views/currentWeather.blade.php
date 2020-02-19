@@ -21,6 +21,13 @@
               <h3 class="col-6">{{ $city->description }}</h3>
               <h3 class="col feelsLike">{{ $city->tempFeels }}C</h3>
             </div>
+
+            <form class="" action="/weather/{{ $city->id }}" method="post">
+              @method('PATCH')
+              @csrf
+              <button type="submit" name="button">Refresh</button>
+
+            </form>
         </div>
     </div>
 </div>
