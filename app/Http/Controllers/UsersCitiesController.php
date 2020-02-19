@@ -37,11 +37,18 @@ class UsersCitiesController extends Controller
     public function store($cityId)
     {
         $cityParam = City::findOrFail($cityId);
-        $userCity = new UserCity();
-        $userCity->userId = auth()->user()->id;
-        $userCity->cityId = $cityId;
-        $userCity->save();
+        $cityLine = UserCity::where('userId', auth()->user()->id)
+                            ->where('cityId', $cityParam->id)
+                            ->first();
+        if ($cityLine) {
+          $this->destroy($cityLine->id);
+        } else {
+          $userCity = new UserCity();
+          $userCity->userId = auth()->user()->id;
+          $userCity->cityId = $cityId;
+          $userCity->save();
 
+        }
         return redirect()->action('CitiesController@show', ['city' => $cityParam->city]);
     }
 
@@ -87,6 +94,8 @@ class UsersCitiesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $userCity = UserCity::findOrFail($id);
+        $userCity->delete();
+        return;
     }
 }
