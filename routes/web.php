@@ -24,3 +24,5 @@ Route::post('/weather', 'CitiesController@store');
 Route::get('/weather/{city}', 'CitiesController@show');
 
 Route::patch('/update', 'CitiesController@update');
+
+Route::post('/checkWind/{cityId}', 'UsersCitiesController@store')->middleware('auth');

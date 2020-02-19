@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\City;
+use App\UserCity;
 
 class CitiesController extends Controller
 {
@@ -67,8 +68,11 @@ class CitiesController extends Controller
     public function show($city)
     {
         $cityParam = City::where('city', $city)->first();
+        $userCity = UserCity::where('userId', auth()->user()->id)
+                            ->where('cityId', $cityParam->id)
+                            ->first();
 
-        return view('currentWeather', compact('cityParam'));
+        return view('currentWeather', compact('cityParam', 'userCity'));
     }
 
     /**
