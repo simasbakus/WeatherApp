@@ -21,8 +21,11 @@
               <h3 class="col-6">{{ $decoded->weather[0]->description }}</h3>
               <h3 class="col feelsLike">{{ $decoded->main->feels_like - 273.15 }}C</h3>
             </div>
+<<<<<<< HEAD
             {{-- <a href="/checkWind">Check Wind</a> --}}
             {{-- testavimui --}}
+=======
+>>>>>>> parent of 7f2d33d... able to refresh all data in database
         </div>
     </div>
 </div>

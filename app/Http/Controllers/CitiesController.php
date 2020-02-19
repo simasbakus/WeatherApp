@@ -85,6 +85,7 @@ class CitiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+<<<<<<< HEAD
     public function checkWind()
     {
         $cities = City::get();
@@ -100,6 +101,11 @@ class CitiesController extends Controller
 
           }
         };
+=======
+    public function update(Request $request, $id)
+    {
+        //
+>>>>>>> parent of 7f2d33d... able to refresh all data in database
     }
 
     /**

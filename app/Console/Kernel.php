@@ -24,9 +24,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->call('App\Http\Controller\CitiesController@update')->everyMinute();
+        // $schedule->command('inspire')
+        //          ->hourly();
     }
-
 
     /**
      * Register the commands for the application.
