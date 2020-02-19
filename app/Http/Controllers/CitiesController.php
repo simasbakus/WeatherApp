@@ -39,15 +39,15 @@ class CitiesController extends Controller
         $doesExist = City::where('city', $city)->first();
         if ($doesExist) {
 
-            return redirect("/weather/$doesExist->id");
+            return redirect("/weather/$city");
 
         } else {
-          
+
             $weather = new City();
             $weather->city = $city;
             $weather->save();
 
-            return redirect("/weather/$weather->id");
+            return redirect("/weather/$city");
         };
     }
 
@@ -59,8 +59,8 @@ class CitiesController extends Controller
      */
     public function show($city)
     {
-        $city = City::findOrFail($city);
-        $url = "http://api.openweathermap.org/data/2.5/weather?q=$city->city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
+        // $city = City::findOrFail($city);
+        $url = "http://api.openweathermap.org/data/2.5/weather?q=$city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
         $array = file_get_contents($url);
         $decoded = json_decode($array);
 
@@ -85,43 +85,21 @@ class CitiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function checkWind()
     {
         $cities = City::get();
         foreach ($cities as $city) {
-          if ($city->windSpeed < 10.0) {
-            $url = "http://api.openweathermap.org/data/2.5/weather?q=$city->city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
-            $array = file_get_contents($url);
-            $decoded = json_decode($array);
-            $temp = $decoded->main->temp - 273.15;
-            $realFeel = $decoded->main->feels_like - 273.15;
+          $url = "http://api.openweathermap.org/data/2.5/weather?q=$city->city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
+          $array = file_get_contents($url);
+          $decoded = json_decode($array);
 
-            $city->description = $decoded->weather[0]->description;
-            $city->temp = $temp;
-            $city->tempFeels = $realFeel;
-            $city->windSpeed = $decoded->wind->speed;
-            $city->save();
-            if ($decoded->wind->speed >= 10.0) {
-              // event wind speed exceeded 10
-            };
-          } else {
-            $url = "http://api.openweathermap.org/data/2.5/weather?q=$city->city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
-            $array = file_get_contents($url);
-            $decoded = json_decode($array);
-            $temp = $decoded->main->temp - 273.15;
-            $realFeel = $decoded->main->feels_like - 273.15;
+          if ($decoded->wind->speed < 10) {
+            // dd("vejas mazesnis");
+            //testavimui
 
-            $city->description = $decoded->weather[0]->description;
-            $city->temp = $temp;
-            $city->tempFeels = $realFeel;
-            $city->windSpeed = $decoded->wind->speed;
-            $city->save();
-            if ($decoded->wind->speed < 10.0) {
-              // event wind speed droped below 10
-            };
-          };
+
+          }
         };
-        return redirect("/weather/$id");
     }
 
     /**

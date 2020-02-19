@@ -23,4 +23,5 @@ Route::post('/weather', 'CitiesController@store');
 
 Route::get('/weather/{city}', 'CitiesController@show');
 
-// Route::patch('/weather/{id}', 'CitiesController@update');
+// Route::get('/checkWind', 'CitiesController@checkWind');
+//testavimui
