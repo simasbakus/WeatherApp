@@ -94,16 +94,33 @@ class CitiesController extends Controller
     {
         $cities = City::get();
         foreach ($cities as $city) {
-          $url = "http://api.openweathermap.org/data/2.5/weather?q=$city->city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
-          $array = file_get_contents($url);
-          $decoded = json_decode($array);
-          $temp = $decoded->main->temp - 273.15;
-          $city->temp = $temp;
-          $city->windSpeed = $decoded->wind->speed;
-          $city->windDir = $decoded->wind->deg;
-          $city->save();
+          if ($city->windSpeed < 10) {
+            $url = "http://api.openweathermap.org/data/2.5/weather?q=$city->city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
+            $array = file_get_contents($url);
+            $decoded = json_decode($array);
+            $temp = $decoded->main->temp - 273.15;
+            $city->temp = $temp;
+            $city->windSpeed = $decoded->wind->speed;
+            $city->windDir = $decoded->wind->deg;
+            $city->save();
+            if ($city->windSpeed >= 10) {
+              // event
+            };
+          } else {
+            $url = "http://api.openweathermap.org/data/2.5/weather?q=$city->city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
+            $array = file_get_contents($url);
+            $decoded = json_decode($array);
+            $temp = $decoded->main->temp - 273.15;
+            $city->temp = $temp;
+            $city->windSpeed = $decoded->wind->speed;
+            $city->windDir = $decoded->wind->deg;
+            $city->save();
+            if ($city->windSpeed < 10) {
+              // event
+            };
+          };
         }
-        return view('/home');
+        return redirect('/home');
     }
 
     /**
