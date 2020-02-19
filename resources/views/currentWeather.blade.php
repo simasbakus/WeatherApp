@@ -11,23 +11,23 @@
               @csrf
             </form>
             <div class="row mt-4 mx-2 d-flex justify-content-center">
-              <h1 class="col-6">{{ $city->city }}</h1>
-              <h1 class="col">{{ $city->temp }}C</h1>
+              <h1 class="col-6">{{ $decoded->name }}</h1>
+              <h1 class="col">{{ $decoded->main->temp - 273.15 }}C</h1>
             </div>
             <div class="row mt-4 mx-2 d-flex justify-content-end">
               <label for="feelsLike" class="col-6">Feels Like</label>
             </div>
             <div class="row mx-2 d-flex justify-content-center">
-              <h3 class="col-6">{{ $city->description }}</h3>
-              <h3 class="col feelsLike">{{ $city->tempFeels }}C</h3>
+              <h3 class="col-6">{{ $decoded->weather[0]->description }}</h3>
+              <h3 class="col feelsLike">{{ $decoded->main->feels_like - 273.15 }}C</h3>
             </div>
 
-            <form class="" action="/weather/{{ $city->id }}" method="post">
+            {{-- <form class="" action="/weather/{{ $city->id }}" method="post">
               @method('PATCH')
               @csrf
               <button type="submit" name="button">Refresh</button>
 
-            </form>
+            </form> --}}
         </div>
     </div>
 </div>
