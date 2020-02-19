@@ -43,8 +43,15 @@ class CitiesController extends Controller
 
         } else {
 
+            $url = "http://api.openweathermap.org/data/2.5/weather?q=$city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
+            $array = file_get_contents($url);
+            $decoded = json_decode($array);
+            $temp = $decoded->main->temp - 273.15;
             $weather = new City();
             $weather->city = $city;
+            $weather->temp = $temp;
+            $weather->windSpeed = $decoded->wind->speed;
+            $weather->windDir = $decoded->wind->deg;
             $weather->save();
 
             return redirect("/weather/$city");
@@ -59,12 +66,9 @@ class CitiesController extends Controller
      */
     public function show($city)
     {
-        // $city = City::findOrFail($city);
-        $url = "http://api.openweathermap.org/data/2.5/weather?q=$city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
-        $array = file_get_contents($url);
-        $decoded = json_decode($array);
+        $cityParam = City::where('city', $city)->first();
 
-        return view('currentWeather', compact('decoded'));
+        return view('currentWeather', compact('cityParam'));
     }
 
     /**
@@ -85,27 +89,21 @@ class CitiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-<<<<<<< HEAD
-    public function checkWind()
+
+    public function update()
     {
         $cities = City::get();
         foreach ($cities as $city) {
           $url = "http://api.openweathermap.org/data/2.5/weather?q=$city->city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
           $array = file_get_contents($url);
           $decoded = json_decode($array);
-
-          if ($decoded->wind->speed < 10) {
-            // dd("vejas mazesnis");
-            //testavimui
-
-
-          }
-        };
-=======
-    public function update(Request $request, $id)
-    {
-        //
->>>>>>> parent of 7f2d33d... able to refresh all data in database
+          $temp = $decoded->main->temp - 273.15;
+          $city->temp = $temp;
+          $city->windSpeed = $decoded->wind->speed;
+          $city->windDir = $decoded->wind->deg;
+          $city->save();
+        }
+        return view('/home');
     }
 
     /**

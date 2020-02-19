@@ -16,6 +16,9 @@ class CreateCitiesTable extends Migration
         Schema::create('cities', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('city')->unique();
+            $table->decimal('temp');
+            $table->decimal('windSpeed');
+            $table->decimal('windDir');
             $table->timestamps();
         });
     }

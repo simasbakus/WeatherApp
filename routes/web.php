@@ -22,9 +22,5 @@ Route::get('/home', 'CitiesController@index')->name('home');
 Route::post('/weather', 'CitiesController@store');
 
 Route::get('/weather/{city}', 'CitiesController@show');
-<<<<<<< HEAD
 
-// Route::get('/checkWind', 'CitiesController@checkWind');
-//testavimui
-=======
->>>>>>> parent of 7f2d33d... able to refresh all data in database
+Route::patch('/update', 'CitiesController@update');
