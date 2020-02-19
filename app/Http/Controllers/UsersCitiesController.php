@@ -94,8 +94,7 @@ class UsersCitiesController extends Controller
      */
     public function destroy($id)
     {
-        $userCity = UserCity::findOrFail($id);
-        $userCity->delete();
+        $userCity = UserCity::findOrFail($id)->delete();
         return;
     }
 }

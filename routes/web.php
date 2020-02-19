@@ -24,5 +24,6 @@ Route::post('/weather', 'CitiesController@store');
 Route::get('/weather/{city}', 'CitiesController@show');
 
 Route::patch('/update', 'CitiesController@update');
+// just for testing
 
 Route::post('/checkWind/{cityId}', 'UsersCitiesController@store')->middleware('auth');

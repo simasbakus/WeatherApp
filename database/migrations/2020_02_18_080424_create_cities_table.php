@@ -18,7 +18,7 @@ class CreateCitiesTable extends Migration
             $table->string('city')->unique();
             $table->decimal('temp');
             $table->decimal('windSpeed');
-            $table->decimal('windDir');
+            $table->string('windDir');
             $table->timestamps();
         });
     }

@@ -52,7 +52,7 @@ class CitiesController extends Controller
             $weather->city = $city;
             $weather->temp = $temp;
             $weather->windSpeed = $decoded->wind->speed;
-            $weather->windDir = $decoded->wind->deg;
+            $weather->windDir = $this->determineWindDirection($decoded->wind->deg);;
             $weather->save();
 
             return redirect("/weather/$city");
@@ -105,7 +105,7 @@ class CitiesController extends Controller
             $temp = $decoded->main->temp - 273.15;
             $city->temp = $temp;
             $city->windSpeed = $decoded->wind->speed;
-            $city->windDir = $decoded->wind->deg;
+            $city->windDir = $this->determineWindDirection($decoded->wind->deg);
             $city->save();
             if ($city->windSpeed >= 10) {
               // event
@@ -117,7 +117,7 @@ class CitiesController extends Controller
             $temp = $decoded->main->temp - 273.15;
             $city->temp = $temp;
             $city->windSpeed = $decoded->wind->speed;
-            $city->windDir = $decoded->wind->deg;
+            $city->windDir = $this->determineWindDirection($decoded->wind->deg);
             $city->save();
             if ($city->windSpeed < 10) {
               // event
@@ -125,6 +125,7 @@ class CitiesController extends Controller
           };
         }
         return redirect('/home');
+        //just for testing
     }
 
     /**
@@ -136,5 +137,27 @@ class CitiesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function determineWindDirection($degrees)
+    {
+      if ($degrees > 22.5 && $degrees <= 67.5) {
+        $direction = "North-East";
+      } elseif ($degrees > 67.5 && $degrees <= 112.5) {
+        $direction = "East";
+      } elseif ($degrees > 112.5 && $degrees <= 157.5) {
+        $direction = "South-East";
+      } elseif ($degrees > 157.5 && $degrees <= 202.5) {
+        $direction = "South";
+      } elseif ($degrees > 202.5 && $degrees <= 247.5) {
+        $direction = "South-West";
+      } elseif ($degrees > 247.5 && $degrees <= 292.5) {
+        $direction = "West";
+      } elseif ($degrees > 292.5 && $degrees <= 337.5) {
+        $direction = "North-West";
+      } elseif ($degrees > 337.5 || $degrees <= 22.5) {
+        $direction = "North";
+      };
+      return $direction;
     }
 }

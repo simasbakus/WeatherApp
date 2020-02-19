@@ -15,8 +15,8 @@
               <h1 class="col">{{ $cityParam->temp }} C</h1>
             </div>
             <div class="row mx-2 d-flex justify-content-center">
-              <h3 class="col-6">{{ $cityParam->windSpeed }} m/s</h3>
-              <h3 class="col feelsLike">{{ $cityParam->windDir }} degrees</h3>
+              <h3 class="col-6">Speed: {{ $cityParam->windSpeed }} m/s</h3>
+              <h3 class="col feelsLike">Direction: {{ $cityParam->windDir }}</h3>
             </div>
             <form class="custom-control custom-switch my-2" action="/checkWind/{{ $cityParam->id }}" method="post">
               <input type="checkbox" onclick="this.form.submit()" class="custom-control-input" id="customSwitch1" {{ $userCity ? 'checked' : '' }}>
@@ -26,6 +26,7 @@
             <form class="" action="/update" method="post">
               @method('PATCH')
               @csrf
+              {{-- just for testing --}}
               <button type="submit" name="button">update weather</button>
             </form>
         </div>
