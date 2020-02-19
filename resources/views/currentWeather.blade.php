@@ -18,11 +18,13 @@
               <h3 class="col-6">Speed: {{ $cityParam->windSpeed }} m/s</h3>
               <h3 class="col feelsLike">Direction: {{ $cityParam->windDir }}</h3>
             </div>
-            <form class="custom-control custom-switch my-2" action="/checkWind/{{ $cityParam->id }}" method="post">
-              <input type="checkbox" onclick="this.form.submit()" class="custom-control-input" id="customSwitch1" {{ $userCity ? 'checked' : '' }}>
-              <label class="custom-control-label" for="customSwitch1">Email Me when wind speed exceeds 10 m/s</label>
-              @csrf
-            </form>
+            @if (auth()->user() == true)
+              <form class="custom-control custom-switch my-2" action="/checkWind/{{ $cityParam->id }}" method="post">
+                <input type="checkbox" onclick="this.form.submit()" class="custom-control-input" id="customSwitch1" {{ $userCity ? 'checked' : '' }}>
+                <label class="custom-control-label" for="customSwitch1">Email Me when wind speed exceeds 10 m/s</label>
+                @csrf
+              </form>
+            @endif
             <form class="" action="/update" method="post">
               @method('PATCH')
               @csrf

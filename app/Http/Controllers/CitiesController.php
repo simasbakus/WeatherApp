@@ -68,11 +68,15 @@ class CitiesController extends Controller
     public function show($city)
     {
         $cityParam = City::where('city', $city)->first();
-        $userCity = UserCity::where('userId', auth()->user()->id)
-                            ->where('cityId', $cityParam->id)
-                            ->first();
+        if (auth()->user() == true) {
+          $userCity = UserCity::where('userId', auth()->user()->id)
+          ->where('cityId', $cityParam->id)
+          ->first();
 
-        return view('currentWeather', compact('cityParam', 'userCity'));
+          return view('currentWeather', compact('cityParam', 'userCity'));
+        } else {
+          return view('currentWeather', compact('cityParam'));
+        }
     }
 
     /**
