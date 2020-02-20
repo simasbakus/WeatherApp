@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\City;
 use App\UserCity;
+use App\Events\WindSpeedChangedEvent;
 
 class CitiesController extends Controller
 {
@@ -15,7 +16,7 @@ class CitiesController extends Controller
      */
     public function index()
     {
-        return view('/home');
+        return view('home');
     }
 
     /**
@@ -72,11 +73,10 @@ class CitiesController extends Controller
           $userCity = UserCity::where('userId', auth()->user()->id)
           ->where('cityId', $cityParam->id)
           ->first();
-
-          return view('currentWeather', compact('cityParam', 'userCity'));
         } else {
-          return view('currentWeather', compact('cityParam'));
-        }
+          $userCity = null;
+        };
+        return view('currentWeather', compact('cityParam', 'userCity'));
     }
 
     /**
@@ -112,7 +112,7 @@ class CitiesController extends Controller
             $city->windDir = $this->determineWindDirection($decoded->wind->deg);
             $city->save();
             if ($city->windSpeed >= 10) {
-              // event
+              event(new WindSpeedChangedEvent($city));
             };
           } else {
             $url = "http://api.openweathermap.org/data/2.5/weather?q=$city->city&APPID=50d091f2d9177ef28cf6718a31a8fb3f";
@@ -124,7 +124,7 @@ class CitiesController extends Controller
             $city->windDir = $this->determineWindDirection($decoded->wind->deg);
             $city->save();
             if ($city->windSpeed < 10) {
-              // event
+              event(new WindSpeedChangedEvent($city));
             };
           };
         }
@@ -164,4 +164,5 @@ class CitiesController extends Controller
       };
       return $direction;
     }
+
 }
