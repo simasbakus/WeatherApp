@@ -26,12 +26,6 @@
               <label class="custom-control-label" for="customSwitch1">Email Me when wind speed exceeds 10 m/s</label>
               @csrf
             </form>
-            <form class="" action="/update" method="post">
-              @method('PATCH')
-              @csrf
-              {{-- just for testing --}}
-              <button type="submit" name="button">update weather</button>
-            </form>
         </div>
     </div>
 </div>

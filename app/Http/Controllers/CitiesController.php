@@ -128,8 +128,7 @@ class CitiesController extends Controller
             };
           };
         }
-        return redirect('/home');
-        //just for testing
+        return;
     }
 
     /**
