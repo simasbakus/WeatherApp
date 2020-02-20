@@ -37,7 +37,7 @@ class CitiesController extends Controller
      */
     public function store(Request $request)
     {
-        $city = request()->city;
+        $city = $this->validateRequest()['city'];
         $doesExist = City::where('city', $city)->first();
         if ($doesExist) {
 
@@ -49,7 +49,7 @@ class CitiesController extends Controller
             $array = file_get_contents($url);
             $decoded = json_decode($array);
             $temp = $decoded->main->temp - 273.15;
-            $weather = new City();
+            $weather = new City($this->validateRequest());
             $weather->city = $city;
             $weather->temp = $temp;
             $weather->windSpeed = $decoded->wind->speed;
@@ -165,4 +165,10 @@ class CitiesController extends Controller
       return $direction;
     }
 
+    private function validateRequest()
+    {
+        return request()->validate([
+          'city' => 'required|max:255'
+        ]);
+    }
 }
